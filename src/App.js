@@ -1,35 +1,23 @@
-import {useQuery, gql} from '@apollo/client'
+import { Route, Switch, Redirect } from 'react-router-dom'
 
-// EXAMPLE FROM
-// https://www.apollographql.com/docs/react/get-started/
-const EXCHANGE_RATES = gql`
-  query GetExchangeRates {
-    rates(currency: "USD") {
-      currency
-      rate
-    }
-  }
-`
+import Nav from './Nav'
+import Home from './Home'
+import ExchangeRates from './ExchangeRates'
 
-const ExchangeRates = () => {
-  const { loading, error, data } = useQuery(EXCHANGE_RATES);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-
-  return data.rates.map(({ currency, rate }) => (
-    <div key={currency}>
-      <p>
-        {currency}: {rate}
-      </p>
-    </div>
-  ));
-}
 
 function App() {
   return (
-    <div>
-      <ExchangeRates />
+    <div style={{padding: '10px'}}>
+      <div>
+        <Nav />
+      </div>
+      <div>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/get-started" component={ExchangeRates} />
+          <Redirect to="/" />
+        </Switch>
+      </div>
     </div>
   );
 }
